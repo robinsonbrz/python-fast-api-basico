@@ -12,7 +12,7 @@ app = FastAPI()
 # rota Raiz
 @app.get("/")
 def raiz():
-    return {"Olá":"mundo!"}
+    return {"Olá": "mundo!"}
 
 
 # model
@@ -41,9 +41,6 @@ def get_usuario_usando_id(id_usuario: int): # definir o tipo para não haver err
             return usuario
     return {"Status":404, "Mensagem": "Não encontrou usuario"}
 
-
-
-
 # Rota Insere
 @app.post("/usuarios")
 def insere_usuario(usuario: Usuario):
@@ -51,3 +48,11 @@ def insere_usuario(usuario: Usuario):
     base_de_dados.append(usuario)
     return usuario
 
+# Rota Delete Id
+@app.delete("/usuarios/{id_usuario}")
+def delete_item(id_usuario: int):
+    for usuario in base_de_dados:
+        if(usuario.id == id_usuario):
+            base_de_dados.remove(usuario)
+            return {'Message': 'Item deleted successfully'}
+    return {"Status":404, "Mensagem": "Não encontrou usuario para deletar"}
