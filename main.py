@@ -56,7 +56,7 @@ def insere_usuario(usuario: Usuario):
 
 # Rota Delete Id
 @app.delete("/usuarios/{id_usuario}")
-def delete_item(id_usuario: int):
+def user(id_usuario: int):
     usuario = usuario_existe(id_usuario)
     if isinstance(usuario, Usuario):
         base_de_dados.remove(usuario)
@@ -65,4 +65,12 @@ def delete_item(id_usuario: int):
 
 
 # Rota Edit Id
-
+@app.put("/usuarios/{id_usuario}")
+def update_user(id_usuario: int, usuario: Usuario):
+    if id_usuario == usuario.id:
+        usuario_base = usuario_existe(id_usuario)
+        if isinstance(usuario_base, Usuario):
+            base_de_dados[id_usuario - 1] = usuario
+            return {'Message': f'Usuário id: {usuario.id} atualizado'}
+        return usuario_base
+    return {'Message': f'Id corpo {usuario.id} difere do id {id_usuario} da solicitação'}
